@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "CommonJS",
+    "target": "ES6",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "paths": {
+      "*.png": [
+        "src/custom.d.ts",
+      ],
+    },
+  },
+  "include": [
+    "src/**/*",
+    "kaluma/**/*",
+  ],
+}
