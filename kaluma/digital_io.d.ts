@@ -1,4 +1,4 @@
-export { }
+export {};
 
 declare global {
   enum PinMode {
@@ -39,21 +39,34 @@ declare global {
   function digitalRead(pin: number): PinMode;
   function digitalWrite(pin: number, value?: PinValue): void;
   function digitalWrite(pin: number[], value?: number): void;
-  function digitalToggle(pin: number): void
-  function setWatch(callback: (pin: number) => void, pin: number, events?: PinEvent, debounce?: number): number
-  function clearWatch(id: number): void
+  function digitalToggle(pin: number): void;
+  function setWatch(
+    callback: (pin: number) => void,
+    pin: number,
+    events?: PinEvent,
+    debounce?: number
+  ): number;
+  function clearWatch(id: number): void;
 
   interface PulseReadOptions {
-    timeout?: number
-    startState?: number
-    mode: PinMode
+    timeout?: number;
+    startState?: number;
+    mode: PinMode;
     trigger?: {
-      pin?: number
-      startState?: PinValue
-      interval?: number[]
-    }
+      pin?: number;
+      startState?: PinValue;
+      interval?: number[];
+    };
   }
 
-  function pulseRead(pin: number, count: number, options?: PulseReadOptions): number[] | null
-  function pulseWrite(pin: number, startState: PinValue, interval: number[]): number
+  function pulseRead(
+    pin: number,
+    count: number,
+    options?: PulseReadOptions
+  ): number[] | null;
+  function pulseWrite(
+    pin: number,
+    startState: PinValue,
+    interval: number[]
+  ): number;
 }

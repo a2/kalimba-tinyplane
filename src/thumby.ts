@@ -1,6 +1,6 @@
-import SSD1306 from './ssd1306-i2c';
-import { BufferedGraphicsContext } from 'graphics';
-import Input from './input';
+import SSD1306 from "./ssd1306-i2c";
+import { BufferedGraphicsContext } from "graphics";
+import Input from "./input";
 
 const Speaker = 28;
 
@@ -9,7 +9,7 @@ export default class Thumby {
   static Input = Input;
 
   lcd: SSD1306;
-  gc: BufferedGraphicsContext
+  gc: BufferedGraphicsContext;
 
   setup() {
     pinMode(Object.values(Input), INPUT_PULLUP);
