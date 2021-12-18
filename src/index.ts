@@ -16,8 +16,8 @@ class Game extends Thumby {
   }
 
   intro() {
-    let sx = 7,
-      sy = 2;
+    let sx = 7;
+    let sy = 2;
     let timer = 0;
 
     while (!this.input(Thumby.Input.A)) {

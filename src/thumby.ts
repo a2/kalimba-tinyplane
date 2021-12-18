@@ -12,7 +12,10 @@ export default class Thumby {
   gc: BufferedGraphicsContext;
 
   setup() {
-    pinMode(Object.values(Input), INPUT_PULLUP);
+    let allPins = Object.keys(Input).map(
+      (key: keyof typeof Input) => Input[key]
+    );
+    pinMode(allPins, INPUT_PULLUP);
 
     const i2c = board.i2c(0, { sda: 16, scl: 17, baudrate: 1000000 });
     this.lcd = new SSD1306();
