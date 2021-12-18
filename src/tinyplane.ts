@@ -34,37 +34,37 @@ export default class TinyPlane extends Thumby {
       const angle = 22.5 * Math.round(4 * Math.sin(frame / 12));
       const bitmap = plane(angle);
 
-      if (sy - bitmap.height / 2 < this.gc.getHeight()) {
+      if (sy - bitmap.height / 2 < this.ctx.getHeight()) {
         const angleRadians = ((90 - angle) * Math.PI) / 180;
         sx += 2 * Math.cos(angleRadians);
         sy += 0.1 + 2 * Math.sin(angleRadians);
       }
 
-      this.gc.clearScreen();
-      if (sy - bitmap.height / 2 < this.gc.getHeight()) {
-        this.gc.drawBitmap(
+      this.ctx.clearScreen();
+      if (sy - bitmap.height / 2 < this.ctx.getHeight()) {
+        this.ctx.drawBitmap(
           sx - bitmap.width / 2,
           sy - bitmap.height / 2,
           bitmap
         );
       } else if (Math.floor(frame / 30) % 2 == 0) {
         const start = "start";
-        const startSize = this.gc.measureText(start);
-        this.gc.drawText(
-          (this.gc.getWidth() - startSize.width) >> 1,
-          this.gc.getHeight() - startSize.height,
+        const startSize = this.ctx.measureText(start);
+        this.ctx.drawText(
+          (this.ctx.getWidth() - startSize.width) >> 1,
+          this.ctx.getHeight() - startSize.height,
           start
         );
       }
 
       const tinyPlane = "TinyPlane";
-      const tinyPlaneSize = this.gc.measureText(tinyPlane);
-      this.gc.drawText(
-        (this.gc.getWidth() - tinyPlaneSize.width) >> 1,
-        (this.gc.getHeight() - tinyPlaneSize.height) >> 1,
+      const tinyPlaneSize = this.ctx.measureText(tinyPlane);
+      this.ctx.drawText(
+        (this.ctx.getWidth() - tinyPlaneSize.width) >> 1,
+        (this.ctx.getHeight() - tinyPlaneSize.height) >> 1,
         tinyPlane.substring(0, Math.floor(frame / 5))
       );
-      this.gc.display();
+      this.ctx.display();
     });
   }
 }

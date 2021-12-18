@@ -41,7 +41,7 @@ export default class Thumby {
   };
 
   lcd: SSD1306;
-  gc: BufferedGraphicsContext;
+  ctx: BufferedGraphicsContext;
   buttons: { [key in Lowercase<keyof typeof Input>]: Thumby.Button };
 
   constructor() {
@@ -53,9 +53,9 @@ export default class Thumby {
     const i2c = board.i2c(0, { sda: 16, scl: 17, baudrate: 1000000 });
     this.lcd = new SSD1306(i2c, { width: 72, height: 40, rst: 18 });
 
-    this.gc = this.lcd.getContext();
-    this.gc.clearScreen();
-    this.gc.display();
+    this.ctx = this.lcd.getContext();
+    this.ctx.clearScreen();
+    this.ctx.display();
 
     this.buttons = {
       a: new Thumby.Button(Input.A),
