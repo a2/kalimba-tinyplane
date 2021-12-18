@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "CommonJS",
-    "target": "ES2015",
     "allowJs": true,
+    "baseUrl": ".",
+    "module": "CommonJS",
     "moduleResolution": "node",
-    "paths": {
-      "*.png": ["src/custom.d.ts"]
-    }
+    "noImplicitAny": true,
+    "outDir": "./dist/",
+    "paths": { "*.png": ["src/custom.d.ts"] },
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2015"
   },
   "include": ["src/**/*", "kaluma/**/*"]
 }

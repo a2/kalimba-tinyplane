@@ -1,4 +1,8 @@
-import { BufferedGraphicsContext, GraphicsContextRotation } from "graphics";
+import {
+  BufferedGraphicsContext,
+  GraphicsContext,
+  GraphicsContextRotation,
+} from "graphics";
 import { I2C } from "i2c";
 
 interface SSD1306Options {
@@ -10,25 +14,18 @@ interface SSD1306Options {
   rotation?: GraphicsContextRotation;
 }
 
-/**
- * SSD1306 class
- */
+/** SSD1306 class */
 export default class SSD1306 {
-  i2c: I2C;
-  width: number;
-  height: number;
-  rst: number;
-  address: number;
-  extVcc: boolean;
-  rotation: GraphicsContextRotation;
-  context: BufferedGraphicsContext;
+  private i2c: I2C;
+  private width: number;
+  private height: number;
+  private rst: number;
+  private address: number;
+  private extVcc: boolean;
+  private rotation: GraphicsContextRotation;
+  private context?: BufferedGraphicsContext;
 
-  /**
-   * Setup SSD1306
-   * @param i2c
-   * @param options
-   */
-  setup(
+  constructor(
     i2c: I2C,
     {
       width = 128,
@@ -46,10 +43,10 @@ export default class SSD1306 {
     this.address = address;
     this.extVcc = extVcc;
     this.rotation = rotation;
-    this.context = null;
     if (this.rst > -1) pinMode(this.rst, OUTPUT);
     this.reset();
-    var initCmds = new Uint8Array([
+
+    const initCmds = new Uint8Array([
       0xae, // 0 disp off
       0xd5, // 1 clk div
       0x80, // 2 suggested ratio
@@ -57,7 +54,7 @@ export default class SSD1306 {
       this.height - 1, // 3 set multiplex, height-1
       0xd3,
       0x00, // 5 display offset (no-offset)
-      0x40, // 7 start line (line #0)
+      0x40, // 7 start line (line 0)
       0x8d,
       this.extVcc ? 0x10 : 0x14, // 8 charge pump
       0x20,
@@ -80,16 +77,15 @@ export default class SSD1306 {
       0xaf, // 25 disp on
     ]);
     this.sendCommands(initCmds);
+
     delay(50);
   }
 
-  private sendCommands(cmds: Uint8Array) {
+  sendCommands(cmds: Uint8Array) {
     cmds.forEach((c) => this.i2c.write(new Uint8Array([0, c]), this.address));
   }
 
-  /**
-   * Reset
-   */
+  /** Reset */
   reset() {
     if (this.rst > -1) {
       pinMode(this.rst, OUTPUT);
@@ -101,11 +97,8 @@ export default class SSD1306 {
     }
   }
 
-  /**
-   * Return a graphic context
-   * @return {GraphicContext}
-   */
-  getContext() {
+  /** Returns the display's graphic context */
+  getContext(): BufferedGraphicsContext {
     if (!this.context) {
       this.context = new BufferedGraphicsContext(this.width, this.height, {
         rotation: this.rotation,
@@ -141,23 +134,17 @@ export default class SSD1306 {
     return this.context;
   }
 
-  /**
-   * Turn on
-   */
+  /** Turn display on */
   on() {
     this.i2c.write(new Uint8Array([0, 0xaf]), this.address);
   }
 
-  /**
-   * Turn off
-   */
+  /** Turn display off */
   off() {
     this.i2c.write(new Uint8Array([0, 0xae]), this.address);
   }
 
-  /**
-   * Set contrast
-   */
+  /** Set display contrast */
   setContrast(c: number) {
     this.i2c.write(new Uint8Array([0, 0x81, c]), this.address);
   }

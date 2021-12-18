@@ -6,7 +6,8 @@
   },
   "scripts": {
     "build": "node tools/build.js",
-    "format": "npx prettier --write .",
+    "check": "tsc --noEmit",
+    "format": "prettier --write .",
     "prepare": "husky install"
   },
   "devDependencies": {

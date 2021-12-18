@@ -27,9 +27,11 @@ esbuild
     bundle: true,
     entryPoints: ["src/index.ts"],
     external: kalumaModules,
+    minify: process.env.NODE_ENV === "production",
     outfile: "dist/bundle.js",
     platform: "node",
     plugins: [pngPlugin],
     sourcemap: true,
+    target: "es2015",
   })
   .catch(() => process.exit(1));
