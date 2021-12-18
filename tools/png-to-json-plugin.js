@@ -1,6 +1,6 @@
-const esbuild = require("esbuild");
+const { Plugin } = require("esbuild");
 
-/** @type {esbuild.Plugin} */
+/** @type {Plugin} */
 module.exports = {
   name: "png",
   setup(build) {
