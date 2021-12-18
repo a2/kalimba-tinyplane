@@ -1,6 +1,14 @@
 import { BufferedGraphicsContext } from "graphics";
-import Input from "./input";
 import SSD1306 from "./ssd1306-i2c";
+
+enum Input {
+  A = 24,
+  B = 27,
+  UP = 4,
+  DOWN = 6,
+  LEFT = 3,
+  RIGHT = 5,
+}
 
 const Speaker = 28;
 
@@ -19,15 +27,15 @@ export default class Thumby {
       return digitalRead(this.pin);
     }
 
-    get pressed(): boolean {
+    pressed(): boolean {
       return !!(1 - this.value);
     }
 
-    get justPressed() {
+    justPressed() {
       let returnValue = false;
       const currentState = this.pressed;
       if (!this.lastState && currentState) returnValue = true;
-      this.lastState = currentState;
+      this.lastState = currentState();
       return returnValue;
     }
   };
@@ -37,10 +45,10 @@ export default class Thumby {
   buttons: { [key in Lowercase<keyof typeof Input>]: Thumby.Button };
 
   constructor() {
-    let allPins = Object.keys(Input).map(
-      (key) => Input[key as keyof typeof Input]
+    pinMode(
+      [Input.A, Input.B, Input.UP, Input.DOWN, Input.LEFT, Input.RIGHT],
+      INPUT_PULLUP
     );
-    pinMode(allPins, INPUT_PULLUP);
 
     const i2c = board.i2c(0, { sda: 16, scl: 17, baudrate: 1000000 });
     this.lcd = new SSD1306(i2c, { width: 72, height: 40, rst: 18 });
