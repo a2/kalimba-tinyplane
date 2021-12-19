@@ -27,7 +27,7 @@ export default class Thumby {
       return digitalRead(this.pin);
     }
 
-    pressed(): boolean {
+    pressed() {
       return !!(1 - this.value);
     }
 
@@ -42,13 +42,24 @@ export default class Thumby {
 
   lcd: SSD1306;
   ctx: BufferedGraphicsContext;
-  buttons: { [key in Lowercase<keyof typeof Input>]: Thumby.Button };
+
+  buttonA: Thumby.Button;
+  buttonB: Thumby.Button;
+  buttonUp: Thumby.Button;
+  buttonDown: Thumby.Button;
+  buttonRight: Thumby.Button;
+  buttonLeft: Thumby.Button;
 
   constructor() {
-    pinMode(
-      [Input.A, Input.B, Input.UP, Input.DOWN, Input.LEFT, Input.RIGHT],
-      INPUT_PULLUP
-    );
+    const allPins = [
+      Input.A,
+      Input.B,
+      Input.UP,
+      Input.DOWN,
+      Input.LEFT,
+      Input.RIGHT,
+    ];
+    pinMode(allPins, INPUT_PULLUP);
 
     const i2c = board.i2c(0, { sda: 16, scl: 17, baudrate: 1000000 });
     this.lcd = new SSD1306(i2c, { width: 72, height: 40, rst: 18 });
@@ -57,23 +68,50 @@ export default class Thumby {
     this.ctx.clearScreen();
     this.ctx.display();
 
-    this.buttons = {
-      a: new Thumby.Button(Input.A),
-      b: new Thumby.Button(Input.B),
-      up: new Thumby.Button(Input.UP),
-      down: new Thumby.Button(Input.DOWN),
-      left: new Thumby.Button(Input.LEFT),
-      right: new Thumby.Button(Input.RIGHT),
-    };
-  }
-
-  button(key: Input): Thumby.Button {
-    const inputKey = Input[key].toLowerCase() as Lowercase<keyof typeof Input>;
-    return this.buttons[inputKey];
+    this.buttonA = new Thumby.Button(Input.A);
+    this.buttonB = new Thumby.Button(Input.B);
+    this.buttonUp = new Thumby.Button(Input.UP);
+    this.buttonDown = new Thumby.Button(Input.DOWN);
+    this.buttonLeft = new Thumby.Button(Input.LEFT);
+    this.buttonRight = new Thumby.Button(Input.RIGHT);
   }
 
   tone(freq: number, duration: number) {
     tone(Speaker, freq, { duration });
+  }
+
+  actionPressed() {
+    return this.buttonA.pressed() || this.buttonB.pressed();
+  }
+
+  actionJustPressed() {
+    return this.buttonA.justPressed() || this.buttonB.justPressed();
+  }
+
+  directionalPressed() {
+    return (
+      this.buttonUp.pressed() ||
+      this.buttonDown.pressed() ||
+      this.buttonLeft.pressed() ||
+      this.buttonRight.pressed()
+    );
+  }
+
+  directionalJustPressed() {
+    return (
+      this.buttonUp.justPressed() ||
+      this.buttonDown.justPressed() ||
+      this.buttonLeft.justPressed() ||
+      this.buttonRight.justPressed()
+    );
+  }
+
+  inputPressed() {
+    return this.actionPressed() || this.directionalPressed();
+  }
+
+  inputJustPressed() {
+    return this.actionJustPressed() || this.directionalJustPressed();
   }
 }
 

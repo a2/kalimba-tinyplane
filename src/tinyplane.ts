@@ -24,7 +24,7 @@ export default class TinyPlane extends Thumby {
     let frame = 0;
 
     this.repeatUntil((done) => {
-      if (this.buttons.a.pressed()) {
+      if (this.buttonA.pressed()) {
         done();
         this.title();
         return;
