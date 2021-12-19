@@ -2,7 +2,7 @@ import plane from "./plane";
 import Thumby from "./thumby";
 
 export default class TinyPlane extends Thumby {
-  scene?: number;
+  private scene?: number;
   fps = 1000 / 30;
 
   play() {
@@ -19,8 +19,8 @@ export default class TinyPlane extends Thumby {
   }
 
   private title() {
-    let sx = 7;
-    let sy = 2;
+    let spriteX = 7;
+    let spriteY = 2;
     let frame = 0;
 
     this.repeatUntil((done) => {
@@ -34,17 +34,17 @@ export default class TinyPlane extends Thumby {
       const angle = 22.5 * Math.round(4 * Math.sin(frame / 12));
       const bitmap = plane(angle);
 
-      if (sy - bitmap.height / 2 < this.ctx.getHeight()) {
+      if (spriteY - bitmap.height / 2 < this.ctx.getHeight()) {
         const angleRadians = ((90 - angle) * Math.PI) / 180;
-        sx += 2 * Math.cos(angleRadians);
-        sy += 0.1 + 2 * Math.sin(angleRadians);
+        spriteX += 2 * Math.cos(angleRadians);
+        spriteY += 0.1 + 2 * Math.sin(angleRadians);
       }
 
       this.ctx.clearScreen();
-      if (sy - bitmap.height / 2 < this.ctx.getHeight()) {
+      if (spriteY - bitmap.height / 2 < this.ctx.getHeight()) {
         this.ctx.drawBitmap(
-          sx - bitmap.width / 2,
-          sy - bitmap.height / 2,
+          spriteX - bitmap.width / 2,
+          spriteY - bitmap.height / 2,
           bitmap
         );
       } else if (Math.floor(frame / 30) % 2 == 0) {
