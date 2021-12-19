@@ -33,9 +33,9 @@ export default class Thumby {
 
     justPressed() {
       let returnValue = false;
-      const currentState = this.pressed;
+      const currentState = this.pressed();
       if (!this.lastState && currentState) returnValue = true;
-      this.lastState = currentState();
+      this.lastState = currentState;
       return returnValue;
     }
   };
