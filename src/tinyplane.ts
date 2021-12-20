@@ -1,5 +1,5 @@
 import plane from "./plane";
-import Thumby from "./thumby";
+import { Thumby } from "kalimba";
 
 export default class TinyPlane extends Thumby {
   private scene?: number;

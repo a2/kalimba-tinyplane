@@ -8,7 +8,11 @@
     "build": "node tools/build.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "serve": "node tools/build.js && kalimba < dist/bundle.js"
+  },
+  "dependencies": {
+    "kalimba": "^1.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.14.5",
