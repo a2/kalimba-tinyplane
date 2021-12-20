@@ -1,6 +1,7 @@
 {
-  "name": "tinyplane",
+  "name": "kalimba-tinyplane",
   "description": "",
+  "private": true,
   "bundle": {
     "mode": "development"
   },
