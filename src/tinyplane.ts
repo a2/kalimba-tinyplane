@@ -3,7 +3,7 @@ import { Thumby } from "kalimba";
 
 export default class TinyPlane extends Thumby {
   private scene?: number;
-  fps = 1000 / 30;
+  readonly fps = 30;
 
   play() {
     this.title();
@@ -17,7 +17,7 @@ export default class TinyPlane extends Thumby {
           this.scene = undefined;
         }
       });
-    }, this.fps);
+    }, 1000 / this.fps);
     this.scene = id;
   }
 
@@ -125,6 +125,7 @@ export default class TinyPlane extends Thumby {
             spriteY - 2 <= block.y + block.height
           ) {
             // game over
+            this.gameOver(score);
             return done();
           }
         }
@@ -173,6 +174,61 @@ export default class TinyPlane extends Thumby {
 
       this.ctx.drawText(0, 0, score.toString());
       this.ctx.display();
+    });
+  }
+
+  private gameOver(score: number) {
+    let frame = 0;
+
+    const gameOver = "Game Over";
+    const gameOverSize = this.ctx.measureText(gameOver);
+
+    const scoreString = score.toString();
+    const scoreSize = this.ctx.measureText(scoreString);
+
+    const retryString = "Retry A/B";
+    const retrySize = this.ctx.measureText(retryString);
+
+    const padding = 4;
+    const totalHeight =
+      gameOverSize.height +
+      padding +
+      scoreSize.height +
+      padding +
+      retrySize.height;
+    const startY = (this.ctx.getHeight() - totalHeight) >> 1;
+
+    this.repeatUntil((done) => {
+      if (this.buttonA.pressed() || this.buttonB.pressed()) {
+        this.game();
+        return done();
+      }
+
+      this.ctx.clearScreen();
+
+      this.ctx.drawText(
+        (this.ctx.getWidth() - gameOverSize.width) >> 1,
+        startY,
+        gameOver
+      );
+
+      this.ctx.drawText(
+        (this.ctx.getWidth() - scoreSize.width) >> 1,
+        startY + gameOverSize.height + padding,
+        scoreString
+      );
+
+      if (Math.floor(frame / 30) % 2 === 0) {
+        this.ctx.drawText(
+          (this.ctx.getWidth() - retrySize.width) >> 1,
+          startY + gameOverSize.height + padding + scoreSize.height + padding,
+          retryString
+        );
+      }
+
+      this.ctx.display();
+
+      frame += 1;
     });
   }
 }
