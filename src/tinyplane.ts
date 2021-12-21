@@ -34,7 +34,7 @@ export default class TinyPlane extends Thumby {
 
       frame += 1;
       const angle = 22.5 * Math.round(4 * Math.sin(frame / 12));
-      const bitmap = plane(angle);
+      const bitmap = plane(Math.abs(angle));
 
       if (spriteY - bitmap.height / 2 < this.ctx.getHeight()) {
         const angleRadians = ((90 - angle) * Math.PI) / 180;
@@ -47,7 +47,8 @@ export default class TinyPlane extends Thumby {
         this.ctx.drawBitmap(
           spriteX - bitmap.width / 2,
           spriteY - bitmap.height / 2,
-          bitmap
+          bitmap,
+          { flipX: angle < 0 }
         );
       } else if (Math.floor(frame / 30) % 2 == 0) {
         const start = "start";
@@ -95,7 +96,7 @@ export default class TinyPlane extends Thumby {
       }
 
       const roundSpriteAngle = 22.5 * Math.round(spriteA / 22.5);
-      const sprite = plane(roundSpriteAngle);
+      const sprite = plane(Math.abs(spriteA));
       const angle = ((90 - roundSpriteAngle) * Math.PI) / 180;
       spriteX += Math.cos(angle);
       const dy = 0.1 + 2 * Math.sin(angle);
@@ -156,7 +157,8 @@ export default class TinyPlane extends Thumby {
       this.ctx.drawBitmap(
         spriteX - sprite.width / 2,
         spriteY - sprite.height / 2 - cameraY,
-        sprite
+        sprite,
+        { flipX: spriteA < 0 }
       );
 
       blocks.forEach(({ x, y, width, height }) => {
