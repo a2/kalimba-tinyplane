@@ -4,19 +4,18 @@
   "name": "Node.js & TypeScript",
   "build": {
     "dockerfile": "Dockerfile",
-    // Update 'VARIANT' to pick a Node version: 16, 14, 12.
-    // Append -bullseye or -buster to pin to an OS version.
-    // Use -bullseye variants on local on arm64/Apple Silicon.
     "args": {
       "VARIANT": "16"
     }
   },
 
   // Set *default* container specific settings.json values on container create.
-  "settings": {},
+  "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": ["dbaeumer.vscode-eslint"],
+  "extensions": ["esbenp.prettier-vscode"],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
